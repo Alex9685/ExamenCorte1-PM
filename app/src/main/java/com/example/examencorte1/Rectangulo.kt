@@ -2,19 +2,19 @@ package com.example.examencorte1
 
 
 class Rectangulo {
-    private var base: Int
-    private var altura: Int
+    public var base: Int
+    public var altura: Int
 
     constructor() {
         base = 0
         altura = 0
     }
 
-    fun calcularArea(): Float {
-        return base.toFloat() * altura.toFloat()
+    fun calcularArea(): Int {
+        return base.toInt() * altura.toInt()
     }
 
-    fun calcularPagPerimetro(): Float {
-        return 2 * (base.toFloat() + altura.toFloat())
+    fun calcularPagPerimetro(): Int {
+        return 2 * (base.toInt() + altura.toInt())
     }
 }
