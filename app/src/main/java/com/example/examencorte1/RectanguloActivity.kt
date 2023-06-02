@@ -1,14 +1,19 @@
 package com.example.examencorte1
 
+import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class RectanguloActivity : AppCompatActivity() {
     private lateinit var rectangulo: Rectangulo
+    private lateinit var lblMostrarNombreUser: TextView
     private lateinit var lblBase: TextView
     private lateinit var txtBase: EditText
     private lateinit var lblAltura: TextView
@@ -27,6 +32,9 @@ class RectanguloActivity : AppCompatActivity() {
 
         rectangulo = Rectangulo()
 
+        lblMostrarNombreUser = findViewById(R.id.lblMostrarNombreUser)
+
+
         lblBase = findViewById(R.id.lblBase)
         txtBase = findViewById(R.id.txtBase)
         lblAltura = findViewById(R.id.lblAltura)
@@ -41,6 +49,10 @@ class RectanguloActivity : AppCompatActivity() {
         btnLimpiar = findViewById(R.id.btnLimpiar)
         btnRegresar = findViewById(R.id.btnRegresar)
 
+        val nombre = intent.getStringExtra("nombre")
+
+        lblMostrarNombreUser.text = nombre
+
         btnCalcular.setOnClickListener {
             calcularAreaYPerimetro()
         }
@@ -50,13 +62,55 @@ class RectanguloActivity : AppCompatActivity() {
         }
 
         btnRegresar.setOnClickListener {
-            finish()
+            salir()
         }
     }
 
+    private fun salir() {
+        val builder = AlertDialog.Builder(this@RectanguloActivity)
+        builder.setTitle("Confirmación")
+        builder.setMessage("¿Estás seguro de querer cerrar sesión?")
+        builder.setPositiveButton("Sí") { dialog, which ->
+            // Acciones a realizar si se selecciona "Sí"
+            val intent = Intent(this@RectanguloActivity, MainActivity::class.java)
+            startActivity(intent)
+            finish() // Finaliza la actividad actual (CalculadorActivity)
+            dialog.dismiss()
+        }
+        builder.setNegativeButton("No") { dialog, which ->
+            // Acciones a realizar si se selecciona "No"
+            dialog.dismiss() // Cierra el diálogo sin realizar ninguna acción adicional
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
     private fun calcularAreaYPerimetro() {
-        val base = txtBase.text.toString().toIntOrNull() ?: 0
-        val altura = txtAltura.text.toString().toIntOrNull() ?: 0
+        val baseText = txtBase.text.toString()
+        val alturaText = txtAltura.text.toString()
+
+        if (baseText.isEmpty()) {
+            txtBase.error = "Ingresa la base"
+            return
+        }
+
+        if (alturaText.isEmpty()) {
+            txtAltura.error = "Ingresa la altura"
+            return
+        }
+
+        val base = baseText.toIntOrNull()
+        val altura = alturaText.toIntOrNull()
+
+        if (base == null) {
+            txtBase.error = "Ingresa un valor numérico válido"
+            return
+        }
+
+        if (altura == null) {
+            txtAltura.error = "Ingresa un valor numérico válido"
+            return
+        }
 
         rectangulo.base = base
         rectangulo.altura = altura
@@ -74,4 +128,6 @@ class RectanguloActivity : AppCompatActivity() {
         lblCalArea.text = ""
         lblCalPerimetro.text = ""
     }
+
+
 }

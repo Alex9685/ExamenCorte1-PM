@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
 
             if (nombre.isNotEmpty()) {
                 Toast.makeText(applicationContext, "Bienvenido", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this@MainActivity, ReciboNominaActivity::class.java)
+                val intent = Intent(this@MainActivity, RectanguloActivity::class.java)
                 intent.putExtra("nombre", nombre)
                 startActivity(intent)
             } else {
